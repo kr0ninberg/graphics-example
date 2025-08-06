@@ -3,8 +3,6 @@
 #include <vector>
 
 #include "../geometryEntities/Point2D.h"
-#include "../geometryEntities/Shape.h"
-
 
 struct Shape;
 
