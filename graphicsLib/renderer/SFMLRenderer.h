@@ -31,8 +31,12 @@ struct SFMLRenderer final : Renderer {
         }
     }
 
-    void drawCircle(float, Point2D) override {
-        // FIXME
+    void drawCircle(float radius, Point2D center) override {
+        auto c = std::make_unique<sf::CircleShape>(radius);
+        c->setPosition(center.x - radius, center.y - radius);
+        c->setFillColor(sf::Color::Green);
+
+        scene.emplace_back(std::move(c));
     }
 
     void drawTriangle(std::array<Point2D, 3> points) override {
@@ -48,12 +52,28 @@ struct SFMLRenderer final : Renderer {
         scene.emplace_back(std::move(tri));
     }
 
-    void drawRectangle(std::array<Point2D, 4> points) override {
-        // FIXME
+    void drawRectangle(std::array<Point2D, 2> points) override {
+        const float width  = std::abs(points[1].x - points[0].x);
+        const float height = std::abs(points[1].y - points[0].y);
+
+        auto rect = std::make_unique<sf::RectangleShape>(sf::Vector2f(width, height));
+        rect->setPosition(points[0].x, points[0].y);
+
+        rect->setFillColor(sf::Color::Blue);
+
+        scene.emplace_back(std::move(rect));
     }
 
     void drawPolygon(std::vector<Point2D> points) override {
-        // FIXME
+        if (points.size() < 3) return;
+
+        auto poly = std::make_unique<sf::ConvexShape>(points.size());
+        for (std::size_t i = 0; i < points.size(); ++i)
+            poly->setPoint(i, {points[i].x, points[i].y});
+
+        poly->setFillColor(sf::Color::Cyan);
+
+        scene.emplace_back(std::move(poly));
     }
 
 private:

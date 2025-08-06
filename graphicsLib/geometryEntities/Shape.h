@@ -4,6 +4,8 @@
 #include "../renderer/Renderer.h"
 
 struct DrawableI {
+    virtual ~DrawableI() = default;
+
     virtual void draw(Renderer& r) = 0;
 };
 
